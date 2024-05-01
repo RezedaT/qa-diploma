@@ -34,6 +34,7 @@ Cтатус контейнеров `UP`.
 `docker-compose down`
 
 ## Интеграция CI
+[![Java CI with Gradle](https://github.com/RezedaT/qa-diploma/actions/workflows/gradle.yml/badge.svg)](https://github.com/RezedaT/qa-diploma/actions/workflows/gradle.yml)
 
 ### Документация
 [План автоматизации](documentation/Plan.md)  
