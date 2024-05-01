@@ -6,68 +6,36 @@
 Цель тестирования – проверить позитивные и негативные сценарии покупки тура через приложение, в том числе UI-тесты и корректность внесения информации в базу данных. 
 В процессе работы приложение взаимодействует с базами данных MySQL и PostgreSQL, а также API эмулятора банковских сервисов, написанном на Node.js. Среда для их запуска находится в Docker-контейнерах.
 
+## ПО для работы с проектом:
+- Intellij IDEA;
+- Docker Desktop;
+- Chrome Google Браузер.
+
+## Запуск проекта.
+
 Для запуска автотестов потребуется выполнить следующие шаги:
-
-1. Установить IntelliJ IDEA 
-2. Установить Docker
-3. Загрузить необходимые Docker-образы с компонентами тестовой среды. Для этого нужно выполнить в командной строке команды
-
-```
-docker pull mysql:8.0.34
-docker pull postgres:13-alpine3.19
-docker pull node:current-alpine
-```
-4. Перейти в папку с проектом, для этого выполнить команду
-
-```cd <путь к папке проекта>```
-
-5. Для запуска тестовой среды выполнить команду
-
-```docker-compose up```
-
-6. Проверить статус контейнеров командой:
-
-```docker-compose ps```
-
+1. Клонировать репозиторий на локальный ПК:
+   `git clone git@github.com:RezedaT/qa-diploma.git`
+2. Открыть проект в Intellij IDEA.
+3. Запустить в терминале контейнеры MySQL, PostgreSQL, Node.js:
+   `docker-compose up`
+4. Проверить в терминале статус контейнеров командой:
+   `docker-compose ps`
 Cтатус контейнеров `UP`.
-
-7. Для запуска тестируемого приложения выполнить команду
-
-```java -jar artifacts/aqa-shop.jar```
-
-в зависимости от выбранной для работы `СУБД` выполнить команду в консоли:
-
-- Для PostgreSQL:
-
-```java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar ./artifacts/aqa-shop.jar```
-
-- Для MySQL:
-
-```java "-Dspring.datasource.url=jdbc:mysql://localhost:3306/app" -jar ./artifacts/aqa-shop.jar```
-
-Сервис открывается по адресу: _http://localhost:8080/_
-
-8. Для запуска автотестов выполнить команду
-
-```./gradlew clean test```
-
-- Для PostgreSQL:
-
-```./gradlew clean test "-Ddatasource.url=jdbc:postgresql://localhost:5432/app"```
-
-- Для MySQL:
-
-```./gradlew clean test "-Ddatasource.url=jdbc:mysql://localhost:3306/app"```
-
-9. Для просмотра отчёта о тестировании выполнить команду
-   
-```./gradlew allureServe```
-
-10. Для завершения работы тестируемого приложения выполнить 
-
+5. Запустить в терминале тестируемое приложение (jar-file):
+   `java -jar artifacts/aqa-shop.jar`
+6. Запустить в терминале автотесты:
+   `./gradlew clean test`
+7. Для просмотра отчёта Allure о тестировании:
+   `./gradlew allureServe`
+8. Завершить в терминале  работу тестируемого приложения: 
 `CTRL + C` с подтверждением действия в терминале вводом `Y`
+9. Завершить в терминале работу контейнеров:
+`docker-compose down`
 
-11. Для завершения работы контейнеров выполнить команду
+## Интеграция CI
 
-```docker-compose down```
-
+### Документация
+[План автоматизации](documentation/Plan.md)  
+[Отчётные документы по итогам тестирования](documentation/Report.md)    
+[Отчётные документы по итогам автоматизации](documentation/Summary.md)  
