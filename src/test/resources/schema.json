@@ -1,0 +1,36 @@
+{
+  "type": "array",
+  "default": [],
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "number",
+      "holder",
+      "cvc",
+      "month",
+      "year"
+    ],
+    "properties": {
+      "number": {
+        "type": "string",
+        "maxLength": 19
+      },
+      "holder": {
+        "type": "string"
+      },
+      "cvc": {
+        "type": "string",
+        "maxLength": 3
+      },
+      "month": {
+        "type": "string",
+        "maxLength": 2
+      },
+      "year": {
+        "type": "string",
+        "maxLength": 2
+      }
+    }
+  }
+}

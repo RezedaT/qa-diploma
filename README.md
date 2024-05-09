@@ -1,4 +1,4 @@
-# Дипломный проект по профессии «Тестировщик»
+# Дипломный проект по профессии «Тестировщик ПО»
 
 # [Веб-сервис заказа путешествия](https://github.com/netology-code/qa-diploma)
 
@@ -13,7 +13,7 @@
 
 ## Запуск проекта.
 
-Для запуска автотестов потребуется выполнить следующие шаги:
+Для запуска автотестов выполнить следующие шаги:
 1. Клонировать репозиторий на локальный ПК:
    `git clone git@github.com:RezedaT/qa-diploma.git`
 2. Открыть проект в Intellij IDEA.
@@ -36,7 +36,10 @@ Cтатус контейнеров `UP`.
 ## Интеграция CI
 [![Java CI with Gradle](https://github.com/RezedaT/qa-diploma/actions/workflows/gradle.yml/badge.svg)](https://github.com/RezedaT/qa-diploma/actions/workflows/gradle.yml)
 
-### Документация
+## Документация
 [План автоматизации](documentation/Plan.md)  
 [Отчётные документы по итогам тестирования](documentation/Report.md)    
 [Отчётные документы по итогам автоматизации](documentation/Summary.md)  
+
+
+RT

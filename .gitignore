@@ -42,3 +42,5 @@ out/
 !artifacts/aqa-shop.jar
 !**/src/main/**
 !**/src/test/**
+
+RT
