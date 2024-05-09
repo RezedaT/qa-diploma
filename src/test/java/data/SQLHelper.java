@@ -51,3 +51,5 @@ public class SQLHelper {
         runner.execute(connection, "DELETE FROM payment_entity");
     }
 }
+
+//RT

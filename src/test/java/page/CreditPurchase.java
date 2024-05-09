@@ -12,9 +12,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class CreditPurchase {
-    //поля //
-    private SelenideElement headerCredit = $x("//h3[text()='Кредит по данным карты']");
-    private SelenideElement buttonPay = $x(".//span[text()='Купить в кредит']");
+    //поля//
+    private SelenideElement header= $x("//h3[text()='Кредит по данным карты']");
     private SelenideElement cardNumberField = $x("//span[text()='Номер карты']/..//input");
     private SelenideElement monthField = $x("//span[text()='Месяц']/..//input");
     private SelenideElement yearField = $x("//span[text()='Год']/..//input");
@@ -67,13 +66,12 @@ public class CreditPurchase {
     }
 
     public CreditPurchase() {
-        buttonPay.click();
-        headerCredit
+        header
                 .shouldBe(visible)
                 .shouldHave(text("Кредит по данным карты"));
     }
 
-    public void fillingCreditPurchasePage(DataHelper.CardData cardData) {
+    public void fillingForm(DataHelper.CardData cardData) {
         cardNumberField.setValue(cardData.getNumber());
         monthField.setValue(cardData.getMonth());
         yearField.setValue(cardData.getYear());
@@ -82,7 +80,7 @@ public class CreditPurchase {
         continueButton.click();
     }
 
-    public void clearingCreditPurchasePage() {
+    public void clearingForm() {
         cardNumberField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
         monthField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         yearField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -91,5 +89,8 @@ public class CreditPurchase {
         closePopupWindow.click();
     }
 }
+
+//RT
+
 
 
