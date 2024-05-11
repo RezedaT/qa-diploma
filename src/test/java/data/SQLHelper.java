@@ -13,10 +13,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLHelper {
-    private static QueryRunner runner = new QueryRunner();
-    private static String url = System.getProperty("spring.datasource.url");
-    private static String user = System.getProperty("spring.datasource.username");
-    private static String password = System.getProperty("spring.datasource.password");
+    private static final QueryRunner runner = new QueryRunner();
+    private static final String url = System.getProperty("db.url");
+    private static final String user = System.getProperty("db.user");
+    private static final String password = System.getProperty("db.pass");
 
     @SneakyThrows
     public static Connection qetConn() {
@@ -44,7 +44,7 @@ public class SQLHelper {
     }
 
     @SneakyThrows
-    public static void cleanDatabase() {
+    public static void cleanDataBase() {
         var connection = qetConn();
         runner.execute(connection, "DELETE FROM credit_request_entity");
         runner.execute(connection, "DELETE FROM order_entity");

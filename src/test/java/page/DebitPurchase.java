@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class DebitPurchase {
     //поля//
     private SelenideElement header = $x("//h3[text()='Оплата по карте']");
-    private SelenideElement cardNumberField = $x("//span[text()='Номер карты']/..//input");
+    private static SelenideElement cardNumberField = $x("//span[text()='Номер карты']/..//input");
     private SelenideElement monthField = $x("//span[text()='Месяц']/..//input");
     private SelenideElement yearField = $x("//span[text()='Год']/..//input");
     private SelenideElement holderField = $x("//span[text()='Владелец']/..//input");
@@ -23,7 +23,7 @@ public class DebitPurchase {
     private SelenideElement closePopupWindow = $(".icon-button__text");
 
     //собщения//
-    private final SelenideElement successNotification = $x("//div[contains(@class,'notification_status_ok')]");
+    private static final SelenideElement successNotification = $x("//div[contains(@class,'notification_status_ok')]");
 
     private final SelenideElement errorNotification = $x("//div[contains(@class, 'notification_status_error')]");
 
@@ -35,7 +35,7 @@ public class DebitPurchase {
 
     private final SelenideElement deadlineIsOver = $x("//span[contains(text(), 'Истёк срок')]");
 
-    public void successNotification() {
+    public static void successNotification() {
         successNotification.
                 shouldBe(visible, Duration.ofSeconds(15)).shouldHave(text("Успешно Операция одобрена Банком."));
     }
@@ -68,7 +68,7 @@ public class DebitPurchase {
     public DebitPurchase() {
          header
                 .shouldBe(visible)
-                .shouldHave(text("Кредит по данным карты"));
+                .shouldHave(text("Оплата по карте"));
     }
 
     public void fillingForm(DataHelper.CardData cardData) {
@@ -79,6 +79,7 @@ public class DebitPurchase {
         cvcField.setValue(cardData.getCvc());
         continueButton.click();
     }
+
 
     public void clearingForm() {
         cardNumberField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);

@@ -1,6 +1,7 @@
 package data;
 
 import com.github.javafaker.Faker;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import lombok.Value;
 
 import java.util.Locale;
@@ -10,8 +11,8 @@ public class DataHelper {
     private static final Faker faker = new Faker(new Locale("en"));
     private static final Faker faker1 = new Faker(new Locale("ru"));
 
-    private DataHelper() {
-    }
+//    private DataHelper() {
+//    }
 
     @Value
     public static class CardData {
@@ -76,4 +77,5 @@ public class DataHelper {
 //        }
     }
 }
+
 
