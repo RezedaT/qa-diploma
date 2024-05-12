@@ -2,24 +2,21 @@ package test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import data.DataHelper;
+import data.SQLHelper;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-import data.SQLHelper;
 import page.Dashboard;
 import page.DebitPurchase;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static data.DataHelper.CardData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static page.DebitPurchase.*;
 
 public class DebitPurchaseTest {
 
-    private Dashboard dashboard;
-    private DebitPurchase debitPurchase;
+    Dashboard dashboard;
+    DebitPurchase debitPurchase;
 
     @BeforeAll
     static void setUpAll() {
@@ -42,6 +39,7 @@ public class DebitPurchaseTest {
         dashboard = new Dashboard();
         debitPurchase = dashboard.chooseDebitPurchase();
     }
+
     @Test
     @DisplayName("Buy by approved card / Оплата зарегистрированной картой")
     void shouldPaymentByApprovedCardWithValidValues() {
@@ -49,8 +47,8 @@ public class DebitPurchaseTest {
                 generateValidCardOwnerName(), generateValidCardCVV(),
                 generateValidCardExpireMonth(),
                 generateValidCardExpireYear());
-        debitPurchase.fillingForm(approvedCard);
-        debitPurchase.successNotification();
+        fillingForm(approvedCard);
+        successNotification();
         assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
 
@@ -61,8 +59,8 @@ public class DebitPurchaseTest {
                 generateValidCardOwnerName(), generateValidCardCVV(),
                 generateValidCardExpireMonth(),
                 generateValidCardExpireYear());
-        debitPurchase.fillingForm(declinedCard);
-        debitPurchase.errorNotification();
+        fillingForm(declinedCard);
+        errorNotification();
         assertEquals("DECLINED", SQLHelper.getPaymentStatus());
     }
 }
