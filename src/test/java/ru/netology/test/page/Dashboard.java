@@ -1,4 +1,4 @@
-package page;
+package ru.netology.test.page;
 
 import com.codeborne.selenide.SelenideElement;
 

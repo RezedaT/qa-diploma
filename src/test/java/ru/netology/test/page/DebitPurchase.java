@@ -1,7 +1,7 @@
-package page;
+package ru.netology.test.page;
 
 import com.codeborne.selenide.SelenideElement;
-import data.DataHelper;
+import ru.netology.test.data.DataHelper;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;

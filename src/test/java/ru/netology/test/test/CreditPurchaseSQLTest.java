@@ -1,4 +1,4 @@
-package test;
+package ru.netology.test.test;
 
 public class CreditPurchaseSQLTest {
 }
