@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.*;
 import com.codeborne.selenide.SelenideElement;
 import java.time.Duration;
 import org.openqa.selenium.Keys;
-import ru.netology.test.data.DataHelper;
+import ru.netology.test.data.CardData;
 
 public class CreditPurchase {
 
@@ -101,21 +101,21 @@ public class CreditPurchase {
         .text();
   }
 
-  public void fillForm(DataHelper.CardData cardData) {
+  public void fillAndSubmitForm(CardData cardData) {
     setCardNum(cardData.getNumber())
-            .setMonth(cardData.getMonth())
-            .setYear(cardData.getYear())
-            .setOwner(cardData.getOwner())
-            .setCvc(cardData.getCvc());
+        .setMonth(cardData.getMonth())
+        .setYear(cardData.getYear())
+        .setOwner(cardData.getOwner())
+        .setCvc(cardData.getCvc());
     continueButton.click();
   }
 
   public void clearForm() {
-    this.setCardNum("")
-            .setMonth("")
-            .setYear("")
-            .setOwner("")
-            .setCvc("");
+    cardNumberField.$("input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
+    monthField.$("input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
+    yearField.$("input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
+    ownerField.$("input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
+    cvcField.$("input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
     if (closePopupWindow1.isDisplayed()) {
       closePopupWindow1.click();
     }

@@ -2,9 +2,7 @@ package ru.netology.test.test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static ru.netology.test.data.DataHelper.CardData.*;
-import static ru.netology.test.data.DataHelper.CardData.generateValidCardCVC;
-import static ru.netology.test.data.DataHelper.faker;
+import static ru.netology.test.data.DataHelper.*;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -44,13 +42,7 @@ public class DebitPurchaseAPITest {
   @Test
   @DisplayName("API test. Buy by approved card / Оплата зарегистрированной картой")
   void shouldAPIPaymentByApprovedCardWithValidValues() {
-    var approvedCard =
-        getCardWithParam(
-            getNumberApprovedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
+    var approvedCard = generateValidCard();
     given()
         .spec(requestSpec)
         .body(approvedCard)
@@ -64,13 +56,7 @@ public class DebitPurchaseAPITest {
   @Test
   @DisplayName("API test. Buy by declined card / Оплата отклоненной картой")
   void shouldAPIPaymentByDeclineCardWithValidValues() {
-    var declinedCard =
-        getCardWithParam(
-            getNumberDeclinedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
+    var declinedCard = generateDeclinedCard();
     given()
         .spec(requestSpec)
         .body(declinedCard)
@@ -86,13 +72,8 @@ public class DebitPurchaseAPITest {
       "API test. Buy by Random number card / "
           + "Оплата картой со случайным набором 16 числовых символов")
   void shouldAPIPaymentByRandomNumberCardWithValidValues() {
-    var card =
-        getCardWithParam(
-            faker.business().creditCardNumber(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
+    var card = generateValidCard();
+    card.setNumber(generateRandomCardNumber());
     given()
         .spec(requestSpec)
         .body(card)
@@ -108,7 +89,11 @@ public class DebitPurchaseAPITest {
       "API test. Payment by approved card, invalid values / "
           + "Оплата зарегистрированной картой, невалидные данные")
   void shouldAPIPaymentByApprovedCardWithInvalidValues() {
-    var approvedCard = getCardWithParam(getNumberApprovedCard(), "00", "", "00", "");
+    var approvedCard = generateValidCard();
+    approvedCard.setMonth("00");
+    approvedCard.setYear("");
+    approvedCard.setOwner("00");
+    approvedCard.setCvc("");
     given()
         .spec(requestSpec)
         .body(approvedCard)

@@ -57,8 +57,8 @@ public class SQLHelper {
   }
 
   @SneakyThrows
-  public static String RowCount() throws SQLException {
-    var code = "SELECT COUNT(*) FROM order_entity;";
+  public static String OrdersCount() throws SQLException {
+    var code = "SELECT COUNT(*) FROM order_entity";
     Long count = null;
     try (var conn = getConn()) {
       count = runner.query(conn, code, new ScalarHandler<>());
@@ -69,8 +69,8 @@ public class SQLHelper {
   }
 
   @SneakyThrows
-  public static String approvedRowCountPaymentCard() throws SQLException {
-    var code = "SELECT COUNT(*) FROM payment_entity WHERE status='APPROVED';";
+  public static String approvedPaymentsCount() {
+    var code = "SELECT COUNT(*) FROM payment_entity WHERE status='APPROVED'";
     Long count;
     try (var conn = getConn()) {
       count = runner.query(conn, code, new ScalarHandler<>());
@@ -81,8 +81,8 @@ public class SQLHelper {
   }
 
   @SneakyThrows
-  public static String declineRowCountPaymentCard() throws SQLException {
-    var code = "SELECT COUNT(*) FROM payment_entity WHERE status='DECLINED';";
+  public static String declinedPaymentsCount() {
+    var code = "SELECT COUNT(*) FROM payment_entity WHERE status='DECLINED'";
     Long count;
     try (var conn = getConn()) {
       count = runner.query(conn, code, new ScalarHandler<>());
@@ -93,7 +93,7 @@ public class SQLHelper {
   }
 
   @SneakyThrows
-  public static String approvedCreditRequestCount() throws SQLException {
+  public static String approvedCreditRequestCount() {
     var code = "SELECT COUNT(*) FROM credit_request_entity WHERE status='APPROVED'";
     Long count;
     try (var conn = getConn()) {
@@ -105,7 +105,7 @@ public class SQLHelper {
   }
 
   @SneakyThrows
-  public static String declinedCreditRequestCount() throws SQLException {
+  public static String declinedCreditRequestCount() {
     var code = "SELECT COUNT(*) FROM credit_request_entity WHERE status='DECLINED'";
     Long count;
     try (var conn = getConn()) {

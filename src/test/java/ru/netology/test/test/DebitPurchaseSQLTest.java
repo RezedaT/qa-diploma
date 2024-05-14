@@ -1,7 +1,8 @@
 package ru.netology.test.test;
 
 import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.test.data.DataHelper.CardData.*;
+import static ru.netology.test.data.DataHelper.generateDeclinedCard;
+import static ru.netology.test.data.DataHelper.generateValidCard;
 import static ru.netology.test.data.SQLHelper.*;
 
 import com.codeborne.selenide.Configuration;
@@ -44,6 +45,7 @@ public class DebitPurchaseSQLTest {
 
   @BeforeEach
   void setup() {
+    SQLHelper.cleanDataBase();
     open(appUrl);
     Configuration.holdBrowserOpen = true;
     dashboard = new Dashboard();
@@ -55,62 +57,32 @@ public class DebitPurchaseSQLTest {
   @DisplayName("Status cards in db / Статус карт в базе данных")
   void shouldTestCardsStatus() {
 
-    var approvedCard1 =
-        getCardWithParam(
-            getNumberApprovedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
-    debitPurchase.fillForm(approvedCard1);
+    var approvedCard1 = generateValidCard();
+    debitPurchase.fillFormAndSubmit(approvedCard1);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
 
-    var approvedCard2 =
-        getCardWithParam(
-            getNumberApprovedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
-    debitPurchase.fillForm(approvedCard2);
+    var approvedCard2 = generateValidCard();
+    debitPurchase.fillFormAndSubmit(approvedCard2);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
 
-    var approvedCard3 =
-        getCardWithParam(
-            getNumberApprovedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
-    debitPurchase.fillForm(approvedCard3);
+    var approvedCard3 = generateValidCard();
+    debitPurchase.fillFormAndSubmit(approvedCard3);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
 
-    var declinedCard1 =
-        getCardWithParam(
-            getNumberDeclinedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
-    debitPurchase.fillForm(declinedCard1);
+    var declinedCard1 = generateDeclinedCard();
+    debitPurchase.fillFormAndSubmit(declinedCard1);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
 
-    var declinedCard2 =
-        getCardWithParam(
-            getNumberDeclinedCard(),
-            generateValidCardExpireMonth(),
-            generateValidCardExpireYear(),
-            generateValidCardOwnerName(),
-            generateValidCardCVC());
-    debitPurchase.fillForm(declinedCard2);
+    var declinedCard2 = generateDeclinedCard();
+    debitPurchase.fillFormAndSubmit(declinedCard2);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
-    Assertions.assertEquals("5", RowCount());
-    Assertions.assertEquals("3", approvedRowCountPaymentCard());
-    Assertions.assertEquals("2", declineRowCountPaymentCard());
+    Assertions.assertEquals("5", OrdersCount());
+    Assertions.assertEquals("3", approvedPaymentsCount());
+    Assertions.assertEquals("2", declinedPaymentsCount());
   }
 }

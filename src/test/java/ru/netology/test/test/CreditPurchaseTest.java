@@ -39,6 +39,7 @@ public class CreditPurchaseTest {
 
   @BeforeEach
   void setup() {
+    SQLHelper.cleanDataBase();
     open(appUrl);
     Configuration.holdBrowserOpen = false;
     Configuration.headless = true;
@@ -61,8 +62,11 @@ public class CreditPurchaseTest {
       String cvcError,
       String remoteSuccessMessage,
       String remoteErrorMessage) {
+    // given
     creditPurchase.setCardNum(cardNum).setMonth(month).setYear(year).setOwner(owner).setCvc(cvc);
+    // when
     creditPurchase.clickSubmit();
+    // then
     assertEquals(creditPurchase.getCardNumError(), cardNumError);
     assertEquals(creditPurchase.getMonthError(), monthError);
     assertEquals(creditPurchase.getYearError(), yearError);
