@@ -2,19 +2,17 @@ package ru.netology.test.test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import ru.netology.test.data.SQLHelper;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
+import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.Dashboard;
 import ru.netology.test.page.DebitPurchase;
 
 import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.test.data.DataHelper.CardData.*;
-import static ru.netology.test.data.DataHelper.CardData.generateValidCardOwnerNameRus;
-import static ru.netology.test.data.DataHelper.faker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.netology.test.page.DebitPurchase.*;
+import static ru.netology.test.data.DataHelper.CardData.*;
+import static ru.netology.test.data.DataHelper.faker;
 
 public class DebitPurchaseTest {
 
@@ -50,8 +48,8 @@ public class DebitPurchaseTest {
         var approvedCard = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(), generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(approvedCard);
-        successNotification();
+        debitPurchase.fillingForm(approvedCard);
+        debitPurchase.getSuccessNotificationContent();
         assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
 
@@ -61,8 +59,8 @@ public class DebitPurchaseTest {
         var declinedCard = getCardWithParam(getNumberDeclinedCard(),
                 generateValidCardExpireMonth(), generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(declinedCard);
-        errorNotification();
+        debitPurchase.fillingForm(declinedCard);
+        debitPurchase.getErrorNotificationContent();
         assertEquals("DECLINED", SQLHelper.getPaymentStatus());
     }
 
@@ -70,9 +68,13 @@ public class DebitPurchaseTest {
     @DisplayName("Empty form / Отправка пустой формы")
     void shouldTestEmptyForm() {
         var card = getCardWithParam("", "", "", "", "");
-        fillingForm(card);
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCardNumError();
+        debitPurchase.getMonthError();
+        debitPurchase.getYearError();
+        debitPurchase.getOwnerError();
+        debitPurchase.getCvcError();
         assertNull(SQLHelper.getPaymentStatus());
-        requiredField();
     }
 
     @Test
@@ -81,8 +83,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam("",
                 generateValidCardExpireMonth(), generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        requiredField();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCardNumError();
     }
 
     @Test
@@ -91,8 +93,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam("4444 4444 4444 444",
                 generateValidCardExpireMonth(), generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCardNumError();
     }
 
     @Test
@@ -101,8 +103,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(faker.business().creditCardNumber(),
                 generateValidCardExpireMonth(), generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        errorNotification();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCardNumError();
     }
 
     @Test
@@ -111,8 +113,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 "", generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-            requiredField();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -121,8 +123,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 "00", generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -131,8 +133,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 "13", generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        incorrectDeadline();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -142,8 +144,8 @@ public class DebitPurchaseTest {
                 generateDate(-1, "MM"),
                 generateDate(0, "YY"),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        incorrectDeadline();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -152,8 +154,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 "2", generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -162,8 +164,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 "&*$ @#",generateValidCardExpireYear(),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getMonthError();
     }
 
     @Test
@@ -172,8 +174,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),(""),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        requiredField();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getYearError();
     }
 
     @Test
@@ -183,8 +185,8 @@ public class DebitPurchaseTest {
                 generateValidCardExpireMonth(),
                 generateDate(-13, "YY"),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        deadlineIsOver();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getYearError();
     }
 
     @Test
@@ -194,8 +196,8 @@ public class DebitPurchaseTest {
                 generateValidCardExpireMonth(),
                 generateDate(-62, "YY"),
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        incorrectDeadline();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getYearError();
     }
 
     @Test
@@ -204,8 +206,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),"3",
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getYearError();
     }
 
     @Test
@@ -214,8 +216,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),"$^* ))",
                 generateValidCardOwnerName(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getYearError();
     }
 
     @Test
@@ -224,8 +226,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 "", generateValidCardCVV());
-        fillingForm(card);
-        requiredField();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
     }
 
     @Test
@@ -234,8 +236,8 @@ public class DebitPurchaseTest {
     var card = getCardWithParam(getNumberApprovedCard(),
             generateValidCardExpireMonth(),generateValidCardExpireYear(),
             "F", generateValidCardCVV());
-    fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
 }
 
     @Test
@@ -244,8 +246,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 "nameMoreThanSixtyFourCharacters NameMoreThanSixtyFourCharacters", generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
     }
 
     @Test
@@ -254,8 +256,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 generateValidCardOwnerNameRus(), generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
     }
 
     @Test
@@ -264,18 +266,18 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 "@ )))&^? !", generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
     }
 
     @Test
-    @DisplayName("Digits in the Holder field / Цифры в поле владелец")
+    @DisplayName("Digits in the holder field / Цифры в поле владелец")
     void shouldTestDigitsInHolderField(){
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 "123 456 789", generateValidCardCVV());
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getOwnerError();
     }
 
     @Test
@@ -284,8 +286,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 generateValidCardOwnerName(), "");
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCvcError();
     }
 
     @Test
@@ -294,8 +296,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 generateValidCardOwnerName(), "3");
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCvcError();
     }
 
     @Test
@@ -304,8 +306,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 generateValidCardOwnerName(), "000");
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCvcError();
     }
 
     @Test
@@ -314,8 +316,8 @@ public class DebitPurchaseTest {
         var card = getCardWithParam(getNumberApprovedCard(),
                 generateValidCardExpireMonth(),generateValidCardExpireYear(),
                 generateValidCardOwnerName(), "LPI");
-        fillingForm(card);
-        invalidFormat();
+        debitPurchase.fillingForm(card);
+        debitPurchase.getCvcError();
     }
 
 }
