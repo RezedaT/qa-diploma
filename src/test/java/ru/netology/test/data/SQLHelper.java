@@ -91,6 +91,30 @@ public class SQLHelper {
     }
     return String.valueOf(count);
   }
+
+  @SneakyThrows
+  public static String approvedCreditRequestCount() throws SQLException {
+    var code = "SELECT COUNT(*) FROM credit_request_entity WHERE status='APPROVED'";
+    Long count;
+    try (var conn = getConn()) {
+      count = runner.query(conn, code, new ScalarHandler<>());
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return String.valueOf(count);
+  }
+
+  @SneakyThrows
+  public static String declinedCreditRequestCount() throws SQLException {
+    var code = "SELECT COUNT(*) FROM credit_request_entity WHERE status='DECLINED'";
+    Long count;
+    try (var conn = getConn()) {
+      count = runner.query(conn, code, new ScalarHandler<>());
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return String.valueOf(count);
+  }
 }
 
 // RT

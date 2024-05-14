@@ -111,11 +111,11 @@ public class CreditPurchase {
   }
 
   public void clearForm() {
-    cardNumberField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
-    monthField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    yearField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    ownerField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    cvcField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+    this.setCardNum("")
+            .setMonth("")
+            .setYear("")
+            .setOwner("")
+            .setCvc("");
     if (closePopupWindow1.isDisplayed()) {
       closePopupWindow1.click();
     }

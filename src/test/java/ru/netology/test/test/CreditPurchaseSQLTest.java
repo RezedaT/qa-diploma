@@ -92,7 +92,7 @@ public class CreditPurchaseSQLTest {
                     generateValidCardCVC());
     creditPurchase.fillForm(approvedCard);
     creditPurchase.getSuccessNotificationContent();
-//    creditPurchase.clearForm();
+creditPurchase.clearForm();
     var PaymentAmount = SQLHelper.getAmountSQL();
     Assertions.assertEquals(450000, PaymentAmount);
   }
@@ -157,7 +157,7 @@ public class CreditPurchaseSQLTest {
     creditPurchase.getSuccessNotificationContent();
     creditPurchase.clearForm();
     Assertions.assertEquals("5", RowCount());
-    Assertions.assertEquals("3", approvedRowCountPaymentCard());
-    Assertions.assertEquals("2", declineRowCountPaymentCard());
+    Assertions.assertEquals("3", approvedCreditRequestCount());
+    Assertions.assertEquals("2", declinedCreditRequestCount());
   }
 }

@@ -83,11 +83,11 @@ public class DebitPurchase {
   }
 
   public void clearForm() {
-    cardNumberField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
-    monthField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    yearField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    ownerField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    cvcField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+    cardNumberField.$("input").setValue("");
+    monthField.$("input").setValue("");
+    yearField.$("input").setValue("");
+    ownerField.$("input").setValue("");
+    cvcField.$("input").setValue("");
     if (closePopupWindow1.isDisplayed()) {
       closePopupWindow1.click();
     }
