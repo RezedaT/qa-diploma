@@ -25,7 +25,7 @@ public class DebitPurchase {
   private final SelenideElement errorNotification;
 
   public DebitPurchase() {
-    var fields = $$("input");
+    var fields = $$(".input");
     cardNumberField = fields.get(0);
     monthField = fields.get(1);
     yearField = fields.get(2);
@@ -74,11 +74,11 @@ public class DebitPurchase {
   }
 
   public void fillForm(DataHelper.CardData cardData) {
-    cardNumberField.setValue(cardData.getNumber());
-    monthField.setValue(cardData.getMonth());
-    yearField.setValue(cardData.getYear());
-    ownerField.setValue(cardData.getOwner());
-    cvcField.setValue(cardData.getCvc());
+    cardNumberField.$("input").setValue(cardData.getNumber());
+    monthField.$("input").setValue(cardData.getMonth());
+    yearField.$("input").setValue(cardData.getYear());
+    ownerField.$("input").setValue(cardData.getOwner());
+    cvcField.$("input").setValue(cardData.getCvc());
     continueButton.click();
   }
 
@@ -88,8 +88,12 @@ public class DebitPurchase {
     yearField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
     ownerField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
     cvcField.sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-    closePopupWindow1.click();
-    closePopupWindow2.click();
+    if (closePopupWindow1.isDisplayed()) {
+      closePopupWindow1.click();
+    }
+    if (closePopupWindow2.isDisplayed()) {
+      closePopupWindow2.click();
+    }
   }
 }
 

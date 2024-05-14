@@ -52,6 +52,7 @@ public class DebitPurchaseSQLTest {
 
   @SneakyThrows
   @Test
+  @DisplayName("Status cards in db / Статус карт в базе данных")
   void shouldTestCardsStatus() {
 
     var approvedCard1 =

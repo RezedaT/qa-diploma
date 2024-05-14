@@ -31,6 +31,14 @@ public class SQLHelper {
   }
 
   @SneakyThrows
+  public static int getAmountSQL() {
+    var amount = "SELECT amount FROM payment_entity order by created desc LIMIT 1";
+    var conn = getConn();
+    var result = runner.query(conn, amount, new ScalarHandler<Integer>());
+    return result;
+  }
+
+  @SneakyThrows
   private static String getResult(String query) {
     String result = "";
     var runner = new QueryRunner();

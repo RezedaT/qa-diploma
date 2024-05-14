@@ -40,7 +40,7 @@ public class DataHelper {
     }
 
     public static String generateValidCardExpireYear() {
-      int nextYear = Year.now().getValue() + 1;
+      int nextYear = Year.now().getValue() % 2000  + 1;
       int randomYear = faker.number().numberBetween(nextYear, nextYear + 3);
       return String.valueOf(randomYear);
     }

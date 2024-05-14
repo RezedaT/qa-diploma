@@ -46,8 +46,60 @@ public class CreditPurchaseSQLTest {
     creditPurchase = dashboard.chooseCreditPurchase();
   }
 
+  @Test
+  @DisplayName("Просмотр статуса в СУБД MySQL отклоненного пользователя")
+  void databaseQueryDeclinedStatusTest() {
+  var declinedCard =
+          getCardWithParam(
+                  getNumberDeclinedCard(),
+                  generateValidCardExpireMonth(),
+                  generateValidCardExpireYear(),
+                  generateValidCardOwnerName(),
+                  generateValidCardCVC());
+    creditPurchase.fillForm(declinedCard);
+    creditPurchase.getSuccessNotificationContent();
+//    creditPurchase.clearForm();
+  var PaymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("DECLINED", PaymentStatus);
+}
+
+  @Test
+  @DisplayName("Просмотр статуса в СУБД MySQL зарегистрированного пользователя")
+  void databaseQueryApprovedStatusTest() {
+    var approvedCard =
+            getCardWithParam(
+                    getNumberApprovedCard(),
+                    generateValidCardExpireMonth(),
+                    generateValidCardExpireYear(),
+                    generateValidCardOwnerName(),
+                    generateValidCardCVC());
+    creditPurchase.fillForm(approvedCard);
+    creditPurchase.getSuccessNotificationContent();
+//    creditPurchase.clearForm();
+    var PaymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("APPROVED", PaymentStatus);
+  }
+
+  @Test
+  @DisplayName("Просмотр оплаты тура в СУБД MySQL зарегистрированного пользователя")
+  void databaseQueryApprovedAmountTest() {
+    var approvedCard =
+            getCardWithParam(
+                    getNumberApprovedCard(),
+                    generateValidCardExpireMonth(),
+                    generateValidCardExpireYear(),
+                    generateValidCardOwnerName(),
+                    generateValidCardCVC());
+    creditPurchase.fillForm(approvedCard);
+    creditPurchase.getSuccessNotificationContent();
+//    creditPurchase.clearForm();
+    var PaymentAmount = SQLHelper.getAmountSQL();
+    Assertions.assertEquals(450000, PaymentAmount);
+  }
+
   @SneakyThrows
   @Test
+  @DisplayName("Status cards in db / Статус карт в базе данных")
   void shouldTestCardsStatus() {
 
     var approvedCard1 =
