@@ -14,13 +14,6 @@ import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.Dashboard;
 import ru.netology.test.page.DebitPurchase;
 
-// Сохранение в базу платежа
-// Сохраняется ли он вообще
-// Записываются ли идентификаторы куда надо
-// Равна ли записанная сумма той, что указана на странице
-// Тот ли сохраняется статус, что был получен от гейта (из data.json эмулятора)
-// Тот ли статус был в сообщении
-
 public class DebitPurchaseSQLTest {
 
   private static final String appUrl = System.getProperty("app.url");
@@ -52,9 +45,51 @@ public class DebitPurchaseSQLTest {
     debitPurchase = dashboard.chooseDebitPurchase();
   }
 
+  @Test
+  @DisplayName("SQL test. Status declined card in db / " +
+          "Статус отклоненной карты в базе данных")
+  void databaseQueryDeclinedStatusTest() {
+    var declinedCard = generateDeclinedCard();
+    debitPurchase.fillFormAndSubmit(declinedCard);
+    debitPurchase.getSuccessNotificationContent();
+    var PaymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("DECLINED", PaymentStatus);
+  }
+
+  @Test
+  @DisplayName("SQL test. Status approved card in db / " +
+          "Статус зарегистрированной карты в базе данных")
+  void databaseQueryApprovedStatusTest() {
+    var approvedCard = generateValidCard();
+    debitPurchase.fillFormAndSubmit(approvedCard);
+    debitPurchase.getSuccessNotificationContent();
+    var PaymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("APPROVED", PaymentStatus);
+  }
+
+  @Test
+  @DisplayName("SQL test. Buy by approved card / Оплата зарегистрированной картой")
+  void databaseQueryApprovedAmountTest() {
+    var approvedCard = generateValidCard();
+    debitPurchase.fillFormAndSubmit(approvedCard);
+    debitPurchase.getSuccessNotificationContent();
+    var PaymentAmount = SQLHelper.getAmountSQL();
+    Assertions.assertEquals(45000, PaymentAmount);
+  }
+
+  @Test
+  @DisplayName("SQL test. Buy by declined card / Оплата отклоненной картой")
+  void databaseQueryDeclinedAmountTest() {
+    var declinedCard = generateDeclinedCard();
+    debitPurchase.fillFormAndSubmit(declinedCard);
+    debitPurchase.getSuccessNotificationContent();
+    var PaymentAmount = SQLHelper.getAmountSQL();
+    Assertions.assertEquals(0, PaymentAmount);
+  }
+
   @SneakyThrows
   @Test
-  @DisplayName("Status cards in db / Статус карт в базе данных")
+  @DisplayName("SQL test. Status cards in db / Статус карт в базе данных")
   void shouldTestCardsStatus() {
 
     var approvedCard1 = generateValidCard();

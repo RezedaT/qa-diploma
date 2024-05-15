@@ -38,7 +38,7 @@
    `docker-compose down`
 
 \* По умолчанию приложение и тесты использует базу данных MySql.
-Для запуска тестов с БД PostgreSQL используйте шаги 5, 6 со следующей переменной:
+Для запуска тестов с БД PostgreSQL выполнить шаги 5, 6 со следующей переменной:
 
 ```sh
 export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/app 

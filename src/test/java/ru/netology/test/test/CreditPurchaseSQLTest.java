@@ -64,41 +64,30 @@ public class CreditPurchaseSQLTest {
   }
 
   @Test
-  @DisplayName("Просмотр статуса в СУБД MySQL отклоненного пользователя")
+  @DisplayName("SQL test. Status declined credit card in db / " +
+          "Статус отклоненной кредитной карты в базе данных")
   void databaseQueryDeclinedStatusTest() {
     var declinedCard = generateDeclinedCard();
     creditPurchase.fillAndSubmitForm(declinedCard);
     creditPurchase.getSuccessNotificationContent();
-    //    creditPurchase.clearForm();
     var PaymentStatus = SQLHelper.getCreditStatus();
     Assertions.assertEquals("DECLINED", PaymentStatus);
   }
 
   @Test
-  @DisplayName("Просмотр статуса в СУБД MySQL зарегистрированного пользователя")
+  @DisplayName("SQL test. Status approved credit card in db / " +
+          "Статус зарегистрированной кредитной карты в базе данных")
   void databaseQueryApprovedStatusTest() {
     var approvedCard = generateValidCard();
     creditPurchase.fillAndSubmitForm(approvedCard);
     creditPurchase.getSuccessNotificationContent();
-    //    creditPurchase.clearForm();
     var PaymentStatus = SQLHelper.getCreditStatus();
     Assertions.assertEquals("APPROVED", PaymentStatus);
   }
 
-  @Test
-  @DisplayName("Просмотр оплаты тура в СУБД MySQL зарегистрированного пользователя")
-  void databaseQueryApprovedAmountTest() {
-    var approvedCard = generateValidCard();
-    creditPurchase.fillAndSubmitForm(approvedCard);
-    creditPurchase.getSuccessNotificationContent();
-    creditPurchase.clearForm();
-    var PaymentAmount = SQLHelper.getAmountSQL();
-    Assertions.assertEquals(450000, PaymentAmount);
-  }
-
   @SneakyThrows
   @Test
-  @DisplayName("Status cards in db / Статус карт в базе данных")
+  @DisplayName("SQL test. Status cards in db / Статус карт в базе данных")
   void shouldTestCardsStatus() {
 
     var approvedCard1 = generateValidCard();
@@ -118,12 +107,12 @@ public class CreditPurchaseSQLTest {
 
     var declinedCard1 = generateDeclinedCard();
     creditPurchase.fillAndSubmitForm(declinedCard1);
-    creditPurchase.getSuccessNotificationContent(); // TODO: this message is wrong
+    creditPurchase.getSuccessNotificationContent();
     creditPurchase.clearForm();
 
     var declinedCard2 = generateDeclinedCard();
     creditPurchase.fillAndSubmitForm(declinedCard2);
-    creditPurchase.getSuccessNotificationContent(); // TODO: this message is wrong
+    creditPurchase.getSuccessNotificationContent();
     creditPurchase.clearForm();
 
     Assertions.assertEquals("5", OrdersCount());
@@ -133,7 +122,7 @@ public class CreditPurchaseSQLTest {
 
   @SneakyThrows
   @Test
-  @DisplayName("Status cards in db / Статус карт в базе данных v2")
+  @DisplayName("SQL test. Status cards in db / Статус карт в базе данных v2")
   void shouldTestCardsStatusV2() {
     // when
     callApiEndpoint(generateValidCard());
