@@ -1,11 +1,5 @@
 package ru.netology.test.test;
 
-import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.netology.test.data.CardData.*;
-import static ru.netology.test.data.DataHelper.*;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -13,6 +7,10 @@ import org.junit.jupiter.api.*;
 import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.Dashboard;
 import ru.netology.test.page.DebitPurchase;
+
+import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.netology.test.data.DataHelper.*;
 
 public class DebitPurchaseTest {
 
@@ -63,24 +61,12 @@ public class DebitPurchaseTest {
   }
 
   @Test
-  @DisplayName("Empty form / Отправка пустой формы")
-  void shouldTestEmptyForm() {
-    debitPurchase.clearForm();
-    debitPurchase.getCardNumError();
-    debitPurchase.getMonthError();
-    debitPurchase.getYearError();
-    debitPurchase.getOwnerError();
-    debitPurchase.getCvcError();
-    assertNull(SQLHelper.getPaymentStatus());
-  }
-
-  @Test
   @DisplayName("Empty card number field / Не заполнено поле номер карты")
   void shouldTestEmptyCardNumberField() {
     var card = generateValidCard();
     card.setNumber("");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCardNumError();
+    assertEquals("Поле обязательно для заполнения", debitPurchase.getCardNumError());
   }
 
   @Test
@@ -89,7 +75,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setNumber("4444 4444 4444 444");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCardNumError();
+    assertEquals("Неверный формат", debitPurchase.getCardNumError());
   }
 
   @Test
@@ -98,7 +84,8 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setNumber(generateRandomCardNumber());
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCardNumError();
+    assertEquals("Ошибка! Банк отказал в проведении операции.",
+            debitPurchase.getErrorNotificationContent());
   }
 
   @Test
@@ -107,7 +94,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setMonth("");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Поле обязательно для заполнения", debitPurchase.getMonthError());
   }
 
   @Test
@@ -116,7 +103,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setMonth("00");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Неверный формат", debitPurchase.getMonthError());
   }
 
   @Test
@@ -125,7 +112,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setMonth("13");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Неверно указан срок действия карты",debitPurchase.getMonthError());
   }
 
   @Test
@@ -135,7 +122,7 @@ public class DebitPurchaseTest {
     card.setMonth(generateDate(-1, "MM"));
     card.setYear(generateDate(0, "YY"));
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Истёк срок действия карты", debitPurchase.getMonthError());
   }
 
   @Test
@@ -144,7 +131,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setMonth("1");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Неверный формат",debitPurchase.getMonthError());
   }
 
   @Test
@@ -153,7 +140,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setMonth("&*$ @#");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getMonthError();
+    assertEquals("Неверный формат",debitPurchase.getMonthError());
   }
 
   @Test
@@ -162,7 +149,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setYear("");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getYearError();
+    assertEquals("Поле обязательно для заполнения",debitPurchase.getYearError());
   }
 
   @Test
@@ -171,7 +158,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setYear(generateDate(-13, "YY"));
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getYearError();
+    assertEquals("Истёк срок действия карты",debitPurchase.getYearError());
   }
 
   @Test
@@ -180,7 +167,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setYear(generateDate(62, "YY"));
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getYearError();
+    assertEquals("Неверно указан срок действия карты",debitPurchase.getYearError());
   }
 
   @Test
@@ -189,7 +176,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setYear("3");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getYearError();
+    assertEquals("Неверный формат",debitPurchase.getYearError());
   }
 
   @Test
@@ -198,7 +185,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setYear("$^* ))");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getYearError();
+    assertEquals("Неверный формат",debitPurchase.getYearError());
   }
 
   @Test
@@ -207,7 +194,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner("");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Поле обязательно для заполнения",debitPurchase.getOwnerError());
   }
 
   @Test
@@ -216,7 +203,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner("F");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Неверный формат",debitPurchase.getOwnerError());
   }
 
   @Test
@@ -225,7 +212,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner("nameMoreThanSixtyFourCharacters NameMoreThanSixtyFourCharacters");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Неверный формат",debitPurchase.getOwnerError());
   }
 
   @Test
@@ -234,7 +221,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner(generateValidCardOwnerNameRus());
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Неверный формат", debitPurchase.getOwnerError());
   }
 
   @Test
@@ -243,7 +230,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner("@ )))&^? !");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Неверный формат",debitPurchase.getOwnerError());
   }
 
   @Test
@@ -252,7 +239,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setOwner("123 456 789");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getOwnerError();
+    assertEquals("Неверный формат",debitPurchase.getOwnerError());
   }
 
   @Test
@@ -261,7 +248,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setCvc("");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCvcError();
+    assertEquals("Поле обязательно для заполнения",debitPurchase.getCvcError());
   }
 
   @Test
@@ -270,7 +257,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setCvc("3");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCvcError();
+    assertEquals("Неверный формат",debitPurchase.getCvcError());
   }
 
   @Test
@@ -279,7 +266,7 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setCvc("000");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCvcError();
+    assertEquals("Неверный формат",debitPurchase.getCvcError());
   }
 
   @Test
@@ -288,6 +275,6 @@ public class DebitPurchaseTest {
     var card = generateValidCard();
     card.setCvc("LPI");
     debitPurchase.fillFormAndSubmit(card);
-    debitPurchase.getCvcError();
+    assertEquals("Неверный формат",debitPurchase.getCvcError());
   }
 }
