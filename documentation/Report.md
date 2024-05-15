@@ -12,7 +12,11 @@
 5. Автоматизированные API-тесты для формы "Кредит по данным карты" (4 теста) CreditPurchaseAPITest;
 6. Автоматизированные тесты БД через SQL-запросы (4 теста) CreditPurchaseSQLTestSQL.
 
-Итого 70 тестов, из них 45% успешных
+Итого 70 тестов, из них 48% успешных
+
+![image](https://github.com/RezedaT/qa-diploma/assets/152332460/0cf8e4d8-88e6-4e94-8aa8-d5c851873f04)
+
+![image](https://github.com/RezedaT/qa-diploma/assets/152332460/2286887e-93c2-4a4b-82ea-37bce1faa49a)
 
 ## Общие рекомендации:
 
