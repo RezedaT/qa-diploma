@@ -1,5 +1,6 @@
 package ru.netology.test.test;
 
+
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.test.data.DataHelper.generateDeclinedCard;
 import static ru.netology.test.data.DataHelper.generateValidCard;
@@ -52,8 +53,8 @@ public class DebitPurchaseSQLTest {
     var declinedCard = generateDeclinedCard();
     debitPurchase.fillFormAndSubmit(declinedCard);
     debitPurchase.getSuccessNotificationContent();
-    var PaymentStatus = SQLHelper.getCreditStatus();
-    Assertions.assertEquals("DECLINED", PaymentStatus);
+    var paymentStatus = SQLHelper.getPaymentStatus();
+    Assertions.assertEquals("DECLINED", paymentStatus);
   }
 
   @Test
@@ -63,18 +64,19 @@ public class DebitPurchaseSQLTest {
     var approvedCard = generateValidCard();
     debitPurchase.fillFormAndSubmit(approvedCard);
     debitPurchase.getSuccessNotificationContent();
-    var PaymentStatus = SQLHelper.getCreditStatus();
-    Assertions.assertEquals("APPROVED", PaymentStatus);
+    var paymentStatus = SQLHelper.getPaymentStatus();
+    Assertions.assertEquals("APPROVED", paymentStatus);
   }
 
+// в базе сумма хранится в копейках
   @Test
   @DisplayName("SQL test. Buy by approved card / Оплата зарегистрированной картой")
   void databaseQueryApprovedAmountTest() {
     var approvedCard = generateValidCard();
     debitPurchase.fillFormAndSubmit(approvedCard);
     debitPurchase.getSuccessNotificationContent();
-    var PaymentAmount = SQLHelper.getAmountSQL();
-    Assertions.assertEquals(45000, PaymentAmount);
+    var paymentAmount = SQLHelper.getAmountSQL();
+    Assertions.assertEquals(4500000, paymentAmount);
   }
 
   @Test
@@ -83,8 +85,8 @@ public class DebitPurchaseSQLTest {
     var declinedCard = generateDeclinedCard();
     debitPurchase.fillFormAndSubmit(declinedCard);
     debitPurchase.getSuccessNotificationContent();
-    var PaymentAmount = SQLHelper.getAmountSQL();
-    Assertions.assertEquals(0, PaymentAmount);
+    var paymentAmount = SQLHelper.getAmountSQL();
+    Assertions.assertEquals(0, paymentAmount);
   }
 
   @SneakyThrows

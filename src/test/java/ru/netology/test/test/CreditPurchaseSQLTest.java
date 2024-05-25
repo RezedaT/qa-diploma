@@ -70,8 +70,8 @@ public class CreditPurchaseSQLTest {
     var declinedCard = generateDeclinedCard();
     creditPurchase.fillAndSubmitForm(declinedCard);
     creditPurchase.getSuccessNotificationContent();
-    var PaymentStatus = SQLHelper.getCreditStatus();
-    Assertions.assertEquals("DECLINED", PaymentStatus);
+    var paymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("DECLINED", paymentStatus);
   }
 
   @Test
@@ -81,8 +81,8 @@ public class CreditPurchaseSQLTest {
     var approvedCard = generateValidCard();
     creditPurchase.fillAndSubmitForm(approvedCard);
     creditPurchase.getSuccessNotificationContent();
-    var PaymentStatus = SQLHelper.getCreditStatus();
-    Assertions.assertEquals("APPROVED", PaymentStatus);
+    var paymentStatus = SQLHelper.getCreditStatus();
+    Assertions.assertEquals("APPROVED", paymentStatus);
   }
 
   @SneakyThrows
