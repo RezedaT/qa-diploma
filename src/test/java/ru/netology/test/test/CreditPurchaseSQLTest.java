@@ -16,24 +16,20 @@ import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 import ru.netology.test.data.CardData;
+import ru.netology.test.data.ConfigurationProperties;
 import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.CreditPurchase;
 import ru.netology.test.page.Dashboard;
 
 public class CreditPurchaseSQLTest {
 
-  private static final String appUrl = System.getProperty("app.url");
-
   private static final RequestSpecification requestSpec =
       new RequestSpecBuilder()
-          .setBaseUri(appUrl)
+          .setBaseUri(ConfigurationProperties.appUrl)
           .setAccept(ContentType.JSON)
           .setContentType(ContentType.JSON)
           .log(LogDetail.ALL)
           .build();
-
-  private static final Boolean selenideHeadless =
-      Boolean.parseBoolean(System.getProperty("selenide.headless"));
 
   Dashboard dashboard;
   CreditPurchase creditPurchase;
@@ -56,16 +52,17 @@ public class CreditPurchaseSQLTest {
   @BeforeEach
   void setup() {
     SQLHelper.cleanDataBase();
-    open(appUrl);
+    open(ConfigurationProperties.appUrl);
     Configuration.holdBrowserOpen = false;
-    Configuration.headless = selenideHeadless;
+    Configuration.headless = ConfigurationProperties.selenideHeadless;
     dashboard = new Dashboard();
     creditPurchase = dashboard.chooseCreditPurchase();
   }
 
   @Test
-  @DisplayName("SQL test. Status declined credit card in db / " +
-          "Статус отклоненной кредитной карты в базе данных")
+  @DisplayName(
+      "SQL test. Status declined credit card in db / "
+          + "Статус отклоненной кредитной карты в базе данных")
   void databaseQueryDeclinedStatusTest() {
     var declinedCard = generateDeclinedCard();
     creditPurchase.fillAndSubmitForm(declinedCard);
@@ -75,8 +72,9 @@ public class CreditPurchaseSQLTest {
   }
 
   @Test
-  @DisplayName("SQL test. Status approved credit card in db / " +
-          "Статус зарегистрированной кредитной карты в базе данных")
+  @DisplayName(
+      "SQL test. Status approved credit card in db / "
+          + "Статус зарегистрированной кредитной карты в базе данных")
   void databaseQueryApprovedStatusTest() {
     var approvedCard = generateValidCard();
     creditPurchase.fillAndSubmitForm(approvedCard);
@@ -115,9 +113,9 @@ public class CreditPurchaseSQLTest {
     creditPurchase.getSuccessNotificationContent();
     creditPurchase.clearForm();
 
-    Assertions.assertEquals("5", OrdersCount());
-    Assertions.assertEquals("3", approvedCreditRequestCount());
-    Assertions.assertEquals("2", declinedCreditRequestCount());
+    Assertions.assertEquals("5", getOrdersCount());
+    Assertions.assertEquals("3", getCreditRequestCount(PaymentStatus.APPROVED));
+    Assertions.assertEquals("2", getCreditRequestCount(PaymentStatus.DECLINED));
   }
 
   @SneakyThrows
@@ -131,9 +129,9 @@ public class CreditPurchaseSQLTest {
     callApiEndpoint(generateDeclinedCard());
     callApiEndpoint(generateValidCard());
     // then
-    Assertions.assertEquals("5", OrdersCount());
-    Assertions.assertEquals("3", approvedCreditRequestCount());
-    Assertions.assertEquals("2", declinedCreditRequestCount());
+    Assertions.assertEquals("5", getOrdersCount());
+    Assertions.assertEquals("3", getCreditRequestCount(PaymentStatus.APPROVED));
+    Assertions.assertEquals("2", getCreditRequestCount(PaymentStatus.DECLINED));
   }
 
   private void callApiEndpoint(CardData cardData) {

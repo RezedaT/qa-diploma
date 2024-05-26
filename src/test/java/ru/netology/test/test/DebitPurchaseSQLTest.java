@@ -1,6 +1,5 @@
 package ru.netology.test.test;
 
-
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.test.data.DataHelper.generateDeclinedCard;
 import static ru.netology.test.data.DataHelper.generateValidCard;
@@ -11,13 +10,12 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
+import ru.netology.test.data.ConfigurationProperties;
 import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.Dashboard;
 import ru.netology.test.page.DebitPurchase;
 
 public class DebitPurchaseSQLTest {
-
-  private static final String appUrl = System.getProperty("app.url");
 
   Dashboard dashboard;
   DebitPurchase debitPurchase;
@@ -40,15 +38,15 @@ public class DebitPurchaseSQLTest {
   @BeforeEach
   void setup() {
     SQLHelper.cleanDataBase();
-    open(appUrl);
-    Configuration.holdBrowserOpen = true;
+    open(ConfigurationProperties.appUrl);
+    Configuration.holdBrowserOpen = false;
+    Configuration.headless = ConfigurationProperties.selenideHeadless;
     dashboard = new Dashboard();
     debitPurchase = dashboard.chooseDebitPurchase();
   }
 
   @Test
-  @DisplayName("SQL test. Status declined card in db / " +
-          "Статус отклоненной карты в базе данных")
+  @DisplayName("SQL test. Status declined card in db / Статус отклоненной карты в базе данных")
   void databaseQueryDeclinedStatusTest() {
     var declinedCard = generateDeclinedCard();
     debitPurchase.fillFormAndSubmit(declinedCard);
@@ -58,8 +56,8 @@ public class DebitPurchaseSQLTest {
   }
 
   @Test
-  @DisplayName("SQL test. Status approved card in db / " +
-          "Статус зарегистрированной карты в базе данных")
+  @DisplayName(
+      "SQL test. Status approved card in db / Статус зарегистрированной карты в базе данных")
   void databaseQueryApprovedStatusTest() {
     var approvedCard = generateValidCard();
     debitPurchase.fillFormAndSubmit(approvedCard);
@@ -68,7 +66,7 @@ public class DebitPurchaseSQLTest {
     Assertions.assertEquals("APPROVED", paymentStatus);
   }
 
-// в базе сумма хранится в копейках
+  // в базе сумма хранится в копейках
   @Test
   @DisplayName("SQL test. Buy by approved card / Оплата зарегистрированной картой")
   void databaseQueryApprovedAmountTest() {
@@ -118,8 +116,8 @@ public class DebitPurchaseSQLTest {
     debitPurchase.fillFormAndSubmit(declinedCard2);
     debitPurchase.getSuccessNotificationContent();
     debitPurchase.clearForm();
-    Assertions.assertEquals("5", OrdersCount());
-    Assertions.assertEquals("3", approvedPaymentsCount());
-    Assertions.assertEquals("2", declinedPaymentsCount());
+    Assertions.assertEquals("5", getOrdersCount());
+    Assertions.assertEquals("3", getPaymentsCount(PaymentStatus.APPROVED));
+    Assertions.assertEquals("2", getPaymentsCount(PaymentStatus.DECLINED));
   }
 }

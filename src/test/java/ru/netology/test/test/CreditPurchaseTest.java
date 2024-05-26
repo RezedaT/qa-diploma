@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import ru.netology.test.data.ConfigurationProperties;
 import ru.netology.test.data.SQLHelper;
 import ru.netology.test.page.CreditPurchase;
 import ru.netology.test.page.Dashboard;
 
 public class CreditPurchaseTest {
-  private static final String appUrl = System.getProperty("app.url");
 
   Dashboard dashboard;
   CreditPurchase creditPurchase;
@@ -40,9 +40,9 @@ public class CreditPurchaseTest {
   @BeforeEach
   void setup() {
     SQLHelper.cleanDataBase();
-    open(appUrl);
+    open(ConfigurationProperties.appUrl);
     Configuration.holdBrowserOpen = false;
-    Configuration.headless = true;
+    Configuration.headless = ConfigurationProperties.selenideHeadless;
     this.dashboard = new Dashboard();
     this.creditPurchase = dashboard.chooseCreditPurchase();
   }

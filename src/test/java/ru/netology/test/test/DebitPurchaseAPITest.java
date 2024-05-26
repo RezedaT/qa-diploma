@@ -11,14 +11,14 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
+import ru.netology.test.data.ConfigurationProperties;
 import ru.netology.test.data.SQLHelper;
 
 public class DebitPurchaseAPITest {
-  private static final String appUrl = System.getProperty("app.url");
 
   private static final RequestSpecification requestSpec =
       new RequestSpecBuilder()
-          .setBaseUri(appUrl)
+          .setBaseUri(ConfigurationProperties.appUrl)
           .setAccept(ContentType.JSON)
           .setContentType(ContentType.JSON)
           .log(LogDetail.ALL)

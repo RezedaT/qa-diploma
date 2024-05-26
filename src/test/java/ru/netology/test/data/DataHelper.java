@@ -5,15 +5,14 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 public class DataHelper {
   public static final String approvedCardNumber = "4444 4444 4444 4441";
   public static final String declinedCardNumber = "4444 4444 4444 4442";
 
-  private static final Faker faker = new Faker(new Locale("en"));
-  private static final Faker faker1 = new Faker(new Locale("ru"));
+  private static final Faker faker = new Faker(Locale.forLanguageTag("en"));
+  private static final Faker faker1 = new Faker(Locale.forLanguageTag("ru"));
 
   public static CardData generateValidCard() {
     return new CardData(
@@ -35,10 +34,16 @@ public class DataHelper {
 
   public static String generateRandomCardNumber() {
     String number;
-    do {
+    //    do {
+    //      number = faker.business().creditCardNumber();
+    //    } while (approvedCardNumber.equals(number) || declinedCardNumber.equals(number));
+    //    return number;
+    while (true) {
       number = faker.business().creditCardNumber();
-    } while (approvedCardNumber.equals(number) || declinedCardNumber.equals(number));
-    return number;
+      if (!approvedCardNumber.equals(number) && !declinedCardNumber.equals(number)) {
+        return number;
+      }
+    }
   }
 
   public static String generateValidCardExpireMonth() {

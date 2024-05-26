@@ -22,7 +22,7 @@
    `git clone git@github.com:RezedaT/qa-diploma.git`
 2. Открыть проект в Intellij IDEA.
 3. Запустить в терминале контейнеры MySQL, PostgreSQL, Node.js:
-   `docker-compose up`
+   `docker-compose up -d`. Использовать команду `docker-compose logs -f` для просмотра вывода логов контейнеров.
 4. Проверить в терминале статус контейнеров командой:
    `docker-compose ps`
    Cтатус контейнеров `UP`.
@@ -41,11 +41,12 @@
 Для запуска тестов с БД PostgreSQL выполнить шаги 5, 6 со следующей переменной:
 
 ```sh
-export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/app 
 # 5. Запустить в терминале тестируемое приложение
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/app 
 java -jar artifacts/aqa-shop.jar
+
 # 6. Запустить в терминале автотесты
-./gradlew clean test -Pdb.url=${SPRING_DATASOURCE_URL}
+./gradlew clean test -Ddb.url=${SPRING_DATASOURCE_URL}
 ```
 
 ## Интеграция CI

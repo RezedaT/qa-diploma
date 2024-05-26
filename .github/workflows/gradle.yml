@@ -17,15 +17,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Container start
-        run: docker-compose up &
-      - name: Waiting for сontainer start
+        run: docker-compose up -d
+      - name: Waiting for container start
         run: sleep 30
       - name: Start SUT
         # Запускаем SUT,
         # имя файла SUT будет отличаться в каждой задаче.
         # & означает, что в фоновом режиме не блокируем терминал для запуска тестов,
         # обязательно должен быть для запуска SUT в CI
-        run: java -jar ./artifacts/aqa-shop.jar -P:jdbc.url=jdbc:mysql://localhost:3306/db &
+        run: java -jar ./artifacts/aqa-shop.jar -Dspring.datasource.url=jdbc:mysql://localhost:3306/db &
       - name: Build with Gradle
         # Запускаем автотесты
         # Для проектов на базе Selenide необходимо добавить параметр для запуска браузера
